@@ -1,0 +1,11 @@
+name = "dpp1"  # You can change this to your project's name
+type = "javascript"  # Set type as JavaScript since you're using index.js
+
+[build]
+  command = "npm install"  # This is if you're using any npm dependencies
+  worker = "./backend/index.js"  # The entry point to your Worker
+  publish_dir = "frontend"  # The directory for your frontend (Pages)
+
+[[env]]
+name = "production"
+route = "https://your-worker-url.example.com/*"  # Set your worker route here
