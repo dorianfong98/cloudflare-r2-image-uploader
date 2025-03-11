@@ -3,18 +3,16 @@ export default {
     const url = new URL(request.url);
     const { method } = request;
 
-    // CORS headers
+    // CORS headers to allow any origin (replace "*" with your frontend URL for better security)
     const corsHeaders = {
-      "Access-Control-Allow-Origin": "*",  // Allow any origin (or specify your frontend URL here)
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",  // Allowed methods
-      "Access-Control-Allow-Headers": "Content-Type",  // Allowed headers
+      "Access-Control-Allow-Origin": "*",  // Allow any origin (you can replace "*" with specific frontend URL for security)
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",  // Allow these HTTP methods
+      "Access-Control-Allow-Headers": "Content-Type",  // Allow these headers
     };
 
-    // Handle OPTIONS (CORS Preflight Request)
+    // Handle OPTIONS request for CORS preflight
     if (method === "OPTIONS") {
-      return new Response(null, {
-        headers: corsHeaders,  // Send the CORS headers for preflight requests
-      });
+      return new Response(null, { headers: corsHeaders });
     }
 
     // Handle image upload (POST /api/upload)
