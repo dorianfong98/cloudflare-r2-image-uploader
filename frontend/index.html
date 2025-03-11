@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Upload to Cloudflare R2</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; text-align: center; }
+    .preview { margin-top: 20px; max-width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+  <h1>Upload Image to Cloudflare R2</h1>
+  <input type="file" id="fileInput" accept="image/*">
+  <button onclick="uploadImage()">Upload</button>
+  <p id="message"></p>
+  <img id="preview" class="preview" src="" alt="">
+  
+  <script>
+    async function uploadImage() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      if (!file) return alert('Please select a file.');
+
+      const res = await fetch('https://dpp1.burrito-bot.workers.dev/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': file.type },
+        body: file
+      });
+
+      const data = await res.json();
+      document.getElementById('message').innerText = 'Uploaded! View your image below:';
+      document.getElementById('preview').src = `https://dpp1.burrito-bot.workers.dev${data.url}`;
+    }
+  </script>
+</body>
+</html>
