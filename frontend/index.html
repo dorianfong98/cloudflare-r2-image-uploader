@@ -10,26 +10,54 @@
 </head>
 <body>
   <h1>Upload Image to Cloudflare R2</h1>
+  
+  <!-- File input for image upload -->
   <input type="file" id="fileInput" accept="image/*">
   <button onclick="uploadImage()">Upload</button>
-  <p id="message"></p>
-  <img id="preview" class="preview" src="" alt="">
   
+  <!-- Message to show upload result -->
+  <p id="message"></p>
+  
+  <!-- Preview of the uploaded image -->
+  <img id="preview" class="preview" src="" alt="" style="display: none;">
+
   <script>
     async function uploadImage() {
       const fileInput = document.getElementById('fileInput');
-      const file = fileInput.files[0];
-      if (!file) return alert('Please select a file.');
+      const messageElement = document.getElementById('message');
+      const previewElement = document.getElementById('preview');
 
-      const res = await fetch('https://dpp1.burrito-bot.workers.dev/api/upload', {
-        method: 'POST',
-        headers: { 'Content-Type': file.type },
-        body: file
-      });
+      if (!fileInput.files[0]) {
+        messageElement.textContent = 'Please select a file to upload.';
+        return;
+      }
 
-      const data = await res.json();
-      document.getElementById('message').innerText = 'Uploaded! View your image below:';
-      document.getElementById('preview').src = `https://dpp1.burrito-bot.workers.dev${data.url}`;
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+
+      try {
+        // Show a message saying the upload is in progress
+        messageElement.textContent = 'Uploading... Please wait.';
+
+        // Send the file via POST to the Cloudflare R2 API
+        const response = await fetch('https://dpp1.burrito-bot.workers.dev/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        // Show success or error message based on the response
+        if (response.ok) {
+          messageElement.textContent = `Upload successful! Image URL: ${data.url}`;
+          previewElement.src = data.url;
+          previewElement.style.display = 'block';  // Show the preview image
+        } else {
+          messageElement.textContent = `Error: ${data.message}`;
+        }
+      } catch (error) {
+        messageElement.textContent = 'Something went wrong. Please try again.';
+      }
     }
   </script>
 </body>
