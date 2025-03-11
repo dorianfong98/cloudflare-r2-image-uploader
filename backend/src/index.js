@@ -7,6 +7,17 @@ export default {
     console.log('Incoming request method:', method);
     console.log('Request URL:', request.url);
 
+    // Set CORS headers
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": "*",  // Allow all origins (you can specify specific origins instead of "*")
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",  // Allowed methods
+      "Access-Control-Allow-Headers": "Content-Type",  // Allowed headers
+    };
+
+    // Handle preflight OPTIONS request (required by browsers)
+    if (method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
     // Handle image upload (POST /api/upload)
     if (method === 'POST' && url.pathname === '/api/upload') {
       console.log('Received upload request.');
