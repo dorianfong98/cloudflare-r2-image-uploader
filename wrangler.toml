@@ -1,16 +1,11 @@
 name = "dpp1"  # Name of the worker
 pages_build_output_dir = "./frontend" # Tell Pages where to look for static assets
 
-type = "javascript"  # Type is JavaScript since you're using index.js
 
 # Add the build section for your Worker
 [build]
-  command = "npm install"  # Optional, for any dependencies you might have
-  command = "npm run build"
-  worker = "./backend/src/index.js"  # Path to your Worker file in the backend
+command = "npm install && npm run build"
 
-[env.production]
-route = "https://dpp1.burrito-bot.workers.dev/*"  # Update the route if needed
 
 [[r2_buckets]]
 binding = "IMAGES"  # The binding used in the worker code
