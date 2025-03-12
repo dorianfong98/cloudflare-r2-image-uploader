@@ -1,16 +1,22 @@
 {
   "name": "dpp1",
   "type": "javascript",
+
   "build": {
     "command": "npm install",
-    "worker": "./backend/src/index.js", // Update this path to point to backend/src/index.js
-    "publish_dir": "frontend"
+    "worker": "./backend/src/index.js",  // Path to your backend worker file
+    "publish_dir": "frontend"  // Frontend files (index.html, etc.)
   },
-  "env": {
-    "production": {
-      "route": "https://dpp1.burrito-bot.workers.dev/*" // Set your worker route here
+
+  "r2_buckets": [
+    {
+      "binding": "IMAGES",
+      "bucket_name": "image-uploads"  // Your R2 bucket name
     }
+  ],
+
+  "env": {
+    "name": "production",
+    "route": "https://dpp1.burrito-bot.workers.dev/*"  // Your worker's route URL
   }
 }
-
-
