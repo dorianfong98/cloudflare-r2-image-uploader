@@ -1,0 +1,9 @@
+name = "cloudflare-r2-image-uploader"  # Set the name of your Pages project
+
+[build]
+  command = "npm install"
+  publish_dir = "frontend"  # Path to your frontend files
+
+[[env]]
+name = "production"
+route = "https://your-pages-url.pages.dev/*"  # Update this with your Pages URL
