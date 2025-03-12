@@ -4,7 +4,11 @@ type = "javascript"  # Type is JavaScript since you're using index.js
 # Add the build section for your Worker
 [build]
   command = "npm install"  # Optional, for any dependencies you might have
+  pages_build_output_dir = "./frontend" # Tell Pages where to look for static assets
   worker = "./backend/src/index.js"  # Path to your Worker file in the backend
+
+[env.production]
+route = "https://dpp1.burrito-bot.workers.dev/*"  # Update the route if needed
 
 [[r2_buckets]]
 binding = "IMAGES"  # The binding used in the worker code
@@ -13,3 +17,4 @@ bucket_name = "image-uploads"  # Name of your R2 bucket (update this as needed)
 [[env]]
 name = "production"
 route = "https://dpp1.burrito-bot.workers.dev/*"  # Update the route if needed
+
