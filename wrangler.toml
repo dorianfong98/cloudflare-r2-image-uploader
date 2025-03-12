@@ -1,8 +1,27 @@
-name = "dpp1"  # Name of the worker
-pages_build_output_dir = "./frontend" # Tell Pages where to look for static assets
+name = "dpp1"
+type = "javascript"
 
+[build]
+  command = "npm install"
+  worker = "./backend/src/index.js"  # Path to the Worker file
+  publish_dir = "frontend"
+  pages_build_output_dir = "frontend" 
 
 [[r2_buckets]]
-binding = "IMAGES"  # The binding used in the worker code
-bucket_name = "image-uploads"  # Name of your R2 bucket (update this as needed)
+binding = "IMAGES"
+bucket_name = "image-uploads"  # Name of your R2 bucket
 
+[[env]]
+name = "production"
+route = "https://dpp1.burrito-bot.workers.dev/*"  # Your Cloudflare Worker URL
+
+#name = "cloudflare-r2-image-uploader"  # Name of your Pages project
+
+#[build]
+#  command = "npm install"  # Optional: Only if you have a build step
+#  publish_dir = "frontend"  # This should point to your static frontend folder
+#  pages_build_output_dir = "frontend"  # Output directory for Pages (use the correct folder)
+
+#[[env]]
+#name = "production"
+#route = "https://cloudflare-r2-image-uploader.pages.dev/*"  # Cloudflare Pages URL for your frontend
