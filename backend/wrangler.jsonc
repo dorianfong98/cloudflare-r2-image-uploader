@@ -8,7 +8,7 @@
   },
   "env": {
     "production": {
-      "route": "https://your-worker-url.example.com/*" // Set your worker route here
+      "route": "https://dpp1.burrito-bot.workers.dev/*" // Set your worker route here
     }
   }
 }
