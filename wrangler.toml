@@ -1,6 +1,6 @@
 name = "dpp1"
 type = "javascript"
-
+compatibility_date = "2025-03-12"  # Add this line to specify the compatibility date
 [build]
   command = "npm install"
   worker = "./backend/src/index.js"  # Path to the Worker file
