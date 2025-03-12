@@ -4,7 +4,7 @@ pages_build_output_dir = "./frontend" # Tell Pages where to look for static asse
 
 # Add the build section for your Worker
 [build]
-command = "npm install && npm run build"
+command = "npm install"
 
 
 [[r2_buckets]]
