@@ -35,6 +35,8 @@
       const formData = new FormData();
       formData.append('file', fileInput.files[0]);
 
+      console.log('Uploading file:', fileInput.files[0]); // Debug the file before upload
+
       try {
         // Show a message saying the upload is in progress
         messageElement.textContent = 'Uploading... Please wait.';
@@ -47,6 +49,8 @@
 
         const data = await response.json();
 
+        console.log('API Response:', data);  // Debug API response
+
         // Show success or error message based on the response
         if (response.ok) {
           messageElement.textContent = `Upload successful! Image URL: ${data.url}`;
@@ -57,6 +61,8 @@
         }
       } catch (error) {
         messageElement.textContent = 'Something went wrong. Please try again.';
+        console.error('Upload error:', error);  // Debug the error
+      
       }
     }
   </script>
