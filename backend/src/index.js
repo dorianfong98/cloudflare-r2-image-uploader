@@ -3,34 +3,31 @@ export default {
     const url = new URL(request.url);
     const { method } = request;
 
-    // CORS headers to allow only the specific frontend domain
+    // CORS headers to allow the frontend domain
     const corsHeaders = {
-      "Access-Control-Allow-Origin": "https://cloudflare-r2-image-uploader.pages.dev", // Specific frontend URL
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",  // Allowed methods
-      "Access-Control-Allow-Headers": "Content-Type",  // Allowed headers
+      "Access-Control-Allow-Origin": "https://cloudflare-r2-image-uploader.pages.dev", // Allow frontend domain
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
     };
 
-    // Handle OPTIONS request for CORS preflight (browser sends preflight request before POST)
+    // Handle OPTIONS request for CORS preflight
     if (method === "OPTIONS") {
       return new Response(null, {
-        headers: corsHeaders, // Send CORS headers for preflight requests
+        headers: corsHeaders,  // Send CORS headers for preflight requests
       });
     }
 
     // Handle image upload (POST /api/upload)
-    if (method === 'POST' && url.pathname === '/api/upload') {
-      console.log('Received upload request.');
-
+    if (method === "POST" && url.pathname === "/api/upload") {
       try {
         const formData = await request.formData();
-        console.log('Form Data:', formData);
+        console.log("Form Data:", formData);
 
-        const file = formData.get('file'); // Ensure this matches the form field name
+        const file = formData.get("file");  // Ensure this matches the form field name
         if (!file) {
-          console.log('No file provided');
-          return new Response('No file provided', { status: 400, headers: corsHeaders });
+          return new Response("No file provided", { status: 400, headers: corsHeaders });
         }
-        console.log('File received:', file.name);
+        console.log("File received:", file.name);
 
         // R2 upload logic
         const bucket = env.IMAGES;
@@ -38,46 +35,48 @@ export default {
 
         return new Response(
           JSON.stringify({
-            message: 'Upload successful!',
+            message: "Upload successful!",
             key: file.name,
             url: `/api/images/${file.name}`,
           }),
           {
-            headers: { 
-              'Content-Type': 'application/json',
-              ...corsHeaders,  // Include CORS headers in the response
+            headers: {
+              "Content-Type": "application/json",
+              ...corsHeaders, // Include CORS headers
             },
           }
         );
       } catch (error) {
-        console.error('Error handling file upload:', error);
-        return new Response('Something went wrong. Please try again.', { status: 500, headers: corsHeaders });
+        console.error("Error handling file upload:", error);
+        return new Response("Something went wrong. Please try again.", {
+          status: 500,
+          headers: corsHeaders,
+        });
       }
     }
 
-    // Handle image fetch (GET /api/images/{key})
-    if (method === "GET" && url.pathname.startsWith('/api/images/')) {
-      const key = url.pathname.split('/').pop();
-      console.log('Fetching image with key:', key);
+    // Handle image fetch (GET)
+    if (method === "GET" && url.pathname.startsWith("/api/images/")) {
+      const key = url.pathname.split("/").pop();
+      console.log("Fetching image with key:", key);
 
       const bucket = env.IMAGES;
       const image = await bucket.get(key);
       if (image) {
         return new Response(image.body, {
-          headers: { 
-            'Content-Type': 'image/jpeg',
-            ...corsHeaders,  // Include CORS headers in the response
+          headers: {
+            "Content-Type": "image/jpeg",
+            ...corsHeaders,  // Include CORS headers
           },
         });
       }
 
-      return new Response('Image not found', {
+      return new Response("Image not found", {
         status: 404,
         headers: corsHeaders,
       });
     }
 
-    // If no matching route, return 404
-    return new Response('❌ Not Found', { status: 404, headers: corsHeaders });
+    return new Response("❌ Not Found", { status: 404, headers: corsHeaders });
   },
 };
