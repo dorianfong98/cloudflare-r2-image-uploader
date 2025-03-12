@@ -14,7 +14,3 @@ route = "https://dpp1.burrito-bot.workers.dev/*"  # Update the route if needed
 binding = "IMAGES"  # The binding used in the worker code
 bucket_name = "image-uploads"  # Name of your R2 bucket (update this as needed)
 
-[[env]]
-name = "production"
-route = "https://dpp1.burrito-bot.workers.dev/*"  # Update the route if needed
-
