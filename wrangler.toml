@@ -2,11 +2,6 @@ name = "dpp1"  # Name of the worker
 pages_build_output_dir = "./frontend" # Tell Pages where to look for static assets
 
 
-# Add the build section for your Worker
-[build]
-command = "npm install"
-
-
 [[r2_buckets]]
 binding = "IMAGES"  # The binding used in the worker code
 bucket_name = "image-uploads"  # Name of your R2 bucket (update this as needed)
