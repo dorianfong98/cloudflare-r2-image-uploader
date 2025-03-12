@@ -3,18 +3,16 @@ export default {
     const url = new URL(request.url);
     const { method } = request;
 
-    // CORS headers to allow any origin (you can replace "*" with specific frontend URL for security)
+    // CORS headers to allow any origin (replace "*" with specific frontend URL for security)
     const corsHeaders = {
       "Access-Control-Allow-Origin": "*",  // Allow all origins (replace "*" with specific frontend URL for security)
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",  // Allow these HTTP methods
-      "Access-Control-Allow-Headers": "Content-Type",  // Allow these headers
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",  // Allowed methods
+      "Access-Control-Allow-Headers": "Content-Type",  // Allowed headers
     };
 
     // Handle OPTIONS request for CORS preflight (browser sends preflight request before POST)
     if (method === "OPTIONS") {
-      return new Response(null, {
-        headers: corsHeaders,  // Send the CORS headers for preflight requests
-      });
+      return new Response(null, { headers: corsHeaders });
     }
 
     // Handle image upload (POST /api/upload)
@@ -27,6 +25,7 @@ export default {
 
         const file = formData.get('file'); // Ensure this matches the form field name
         if (!file) {
+          console.log('No file provided');
           return new Response('No file provided', { status: 400, headers: corsHeaders });
         }
         console.log('File received:', file.name);
@@ -59,7 +58,6 @@ export default {
       const key = url.pathname.split('/').pop();
       console.log('Fetching image with key:', key);
 
-      // Example: Fetch image from R2
       const bucket = env.IMAGES;
       const image = await bucket.get(key);
       if (image) {

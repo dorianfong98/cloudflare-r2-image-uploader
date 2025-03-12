@@ -23,48 +23,46 @@
 
   <script>
     async function uploadImage() {
-      const fileInput = document.getElementById('fileInput');
-      const messageElement = document.getElementById('message');
-      const previewElement = document.getElementById('preview');
+  const fileInput = document.getElementById('fileInput');
+  const messageElement = document.getElementById('message');
+  const previewElement = document.getElementById('preview');
 
-      if (!fileInput.files[0]) {
-        messageElement.textContent = 'Please select a file to upload.';
-        return;
-      }
+  if (!fileInput.files[0]) {
+    messageElement.textContent = 'Please select a file to upload.';
+    return;
+  }
 
-      const formData = new FormData();
-      formData.append('file', fileInput.files[0]);
+  const formData = new FormData();
+  formData.append('file', fileInput.files[0]);
 
-      console.log('Uploading file:', fileInput.files[0]); // Debug the file before upload
+  console.log('Uploading file:', fileInput.files[0]);
 
-      try {
-        // Show a message saying the upload is in progress
-        messageElement.textContent = 'Uploading... Please wait.';
+  try {
+    // Show a message saying the upload is in progress
+    messageElement.textContent = 'Uploading... Please wait.';
 
-        // Send the file via POST to the Cloudflare R2 API
-        const response = await fetch('https://dpp1.burrito-bot.workers.dev/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
+    const response = await fetch('https://dpp1.burrito-bot.workers.dev/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        console.log('API Response:', data);  // Debug API response
+    console.log('API Response:', data);
 
-        // Show success or error message based on the response
-        if (response.ok) {
-          messageElement.textContent = `Upload successful! Image URL: ${data.url}`;
-          previewElement.src = data.url;
-          previewElement.style.display = 'block';  // Show the preview image
-        } else {
-          messageElement.textContent = `Error: ${data.message}`;
-        }
-      } catch (error) {
-        messageElement.textContent = 'Something went wrong. Please try again.';
-        console.error('Upload error:', error);  // Debug the error
-      
-      }
+    if (response.ok) {
+      messageElement.textContent = `Upload successful! Image URL: ${data.url}`;
+      previewElement.src = data.url;
+      previewElement.style.display = 'block';  // Show the preview image
+    } else {
+      messageElement.textContent = `Error: ${data.message}`;
     }
+  } catch (error) {
+    messageElement.textContent = 'Something went wrong. Please try again.';
+    console.error('Upload error:', error);
+  }
+}
+
   </script>
 </body>
 </html>
