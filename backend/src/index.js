@@ -3,9 +3,9 @@ export default {
     const url = new URL(request.url);
     const { method } = request;
 
-    // CORS headers to allow any origin (you can replace "*" with a specific frontend URL for better security)
+    // CORS headers to allow any origin (you can replace "*" with specific frontend URL for security)
     const corsHeaders = {
-      "Access-Control-Allow-Origin": "*",  // Allow all origins (or specify the frontend URL for security)
+      "Access-Control-Allow-Origin": "*",  // Allow all origins (replace "*" with specific frontend URL for security)
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",  // Allow these HTTP methods
       "Access-Control-Allow-Headers": "Content-Type",  // Allow these headers
     };
