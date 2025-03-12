@@ -1,0 +1,26 @@
+{
+  "name": "dpp1",
+  "version": "1.0.0",
+  "description": "A **serverless image upload platform** powered by **Cloudflare Workers** + **R2**, with a simple **frontend** to upload and retrieve images via a unique URL — all deployed on Cloudflare's global infrastructure.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dorianfong98/cloudflare-r2-image-uploader.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dorianfong98/cloudflare-r2-image-uploader/issues"
+  },
+  "homepage": "https://github.com/dorianfong98/cloudflare-r2-image-uploader#readme",
+  "dependencies": {
+    "wrangler": "^3.114.1"
+  }
+}
