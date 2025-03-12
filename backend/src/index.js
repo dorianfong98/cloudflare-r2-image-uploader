@@ -5,31 +5,34 @@ export default {
 
     // CORS headers to allow frontend domain
     const corsHeaders = {
-      "Access-Control-Allow-Origin": "https://cloudflare-r2-image-uploader.pages.dev",  // Allow your frontend URL
+      "Access-Control-Allow-Origin": "https://cloudflare-r2-image-uploader.pages.dev",  // Allow frontend URL
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",  // Allow specific methods
       "Access-Control-Allow-Headers": "Content-Type",  // Allow specific headers
     };
 
-    // Handle OPTIONS preflight request
+    console.log(`Request received: ${method} ${url.pathname}`);  // Log the request method and URL
+
+    // Handle OPTIONS preflight request (for CORS)
     if (method === "OPTIONS") {
-      return new Response(null, {
-        status: 200,
-        headers: corsHeaders,  // Send CORS headers for OPTIONS request
-      });
+      console.log("Handling OPTIONS request for CORS preflight");
+      return new Response(null, { status: 200, headers: corsHeaders });
     }
 
-    // Handle POST request for file upload
+    // Handle image upload (POST /api/upload)
     if (method === 'POST' && url.pathname === '/api/upload') {
+      console.log('Handling POST request for /api/upload');
+
       try {
         const formData = await request.formData();
-        console.log("Form Data:", formData);
+        console.log('Form Data:', formData);
 
-        const file = formData.get("file");
+        const file = formData.get('file'); // Ensure this matches the field name
         if (!file) {
+          console.log('No file provided');
           return new Response('No file provided', { status: 400, headers: corsHeaders });
         }
 
-        console.log("File received:", file.name);
+        console.log('File received:', file.name);
 
         // R2 upload logic
         const bucket = env.IMAGES;
@@ -37,45 +40,46 @@ export default {
 
         return new Response(
           JSON.stringify({
-            message: "Upload successful!",
+            message: 'Upload successful!',
             key: file.name,
             url: `/api/images/${file.name}`,
           }),
           {
-            headers: {
-              "Content-Type": "application/json",
+            headers: { 
+              'Content-Type': 'application/json',
               ...corsHeaders,  // Include CORS headers in the response
             },
           }
         );
       } catch (error) {
-        console.error("Error handling file upload:", error);
-        return new Response("Something went wrong. Please try again.", { status: 500, headers: corsHeaders });
+        console.error('Error handling file upload:', error);
+        return new Response('Something went wrong. Please try again.', { status: 500, headers: corsHeaders });
       }
     }
 
-    // Handle image fetch (GET)
-    if (method === "GET" && url.pathname.startsWith("/api/images/")) {
-      const key = url.pathname.split("/").pop();
-      console.log("Fetching image with key:", key);
+    // Handle image fetch (GET /api/images/{key})
+    if (method === "GET" && url.pathname.startsWith('/api/images/')) {
+      const key = url.pathname.split('/').pop();
+      console.log('Fetching image with key:', key);
 
       const bucket = env.IMAGES;
       const image = await bucket.get(key);
       if (image) {
         return new Response(image.body, {
-          headers: {
-            "Content-Type": "image/jpeg",
+          headers: { 
+            'Content-Type': 'image/jpeg',
             ...corsHeaders,  // Include CORS headers in the response
           },
         });
       }
 
-      return new Response("Image not found", {
+      return new Response('Image not found', {
         status: 404,
         headers: corsHeaders,
       });
     }
 
-    return new Response("❌ Not Found", { status: 404, headers: corsHeaders });
+    console.log('Route not found');
+    return new Response('❌ Not Found', { status: 404, headers: corsHeaders });
   },
 };
