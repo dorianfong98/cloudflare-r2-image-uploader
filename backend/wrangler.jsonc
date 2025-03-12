@@ -1,11 +1,16 @@
-name = "dpp1"
-type = "javascript"
+{
+  "name": "dpp1",
+  "type": "javascript",
+  "build": {
+    "command": "npm install",
+    "worker": "./backend/src/index.js", // Update this path to point to backend/src/index.js
+    "publish_dir": "frontend"
+  },
+  "env": {
+    "production": {
+      "route": "https://your-worker-url.example.com/*" // Set your worker route here
+    }
+  }
+}
 
-[build]
-  command = "npm install"
-  worker = "./backend/src/index.js"  # Update this path to point to backend/src/index.js
-  publish_dir = "frontend"
 
-[[env]]
-name = "production"
-route = "https://your-worker-url.example.com/*"  # Set your worker route here
