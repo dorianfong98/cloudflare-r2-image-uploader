@@ -3,16 +3,18 @@ export default {
     const url = new URL(request.url);
     const { method } = request;
 
-    // CORS headers to allow any origin (replace "*" with specific frontend URL for security)
+    // Replace "*" with the specific frontend domain
     const corsHeaders = {
-      "Access-Control-Allow-Origin": "*",  // Allow all origins (replace "*" with specific frontend URL for security)
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",  // Allowed methods
-      "Access-Control-Allow-Headers": "Content-Type",  // Allowed headers
+      "Access-Control-Allow-Origin": "https://cloudflare-r2-image-uploader.pages.dev", // Specific frontend URL
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",  // Allow these HTTP methods
+      "Access-Control-Allow-Headers": "Content-Type",  // Allow these headers
     };
 
     // Handle OPTIONS request for CORS preflight (browser sends preflight request before POST)
     if (method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
+      return new Response(null, {
+        headers: corsHeaders,  // Send the CORS headers for preflight requests
+      });
     }
 
     // Handle image upload (POST /api/upload)
@@ -25,7 +27,6 @@ export default {
 
         const file = formData.get('file'); // Ensure this matches the form field name
         if (!file) {
-          console.log('No file provided');
           return new Response('No file provided', { status: 400, headers: corsHeaders });
         }
         console.log('File received:', file.name);
