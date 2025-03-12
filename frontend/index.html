@@ -38,7 +38,6 @@
   console.log('Uploading file:', fileInput.files[0]);
 
   try {
-    // Show a message saying the upload is in progress
     messageElement.textContent = 'Uploading... Please wait.';
 
     const response = await fetch('https://dpp1.burrito-bot.workers.dev/api/upload', {
@@ -47,13 +46,12 @@
     });
 
     const data = await response.json();
-
     console.log('API Response:', data);
 
     if (response.ok) {
       messageElement.textContent = `Upload successful! Image URL: ${data.url}`;
       previewElement.src = data.url;
-      previewElement.style.display = 'block';  // Show the preview image
+      previewElement.style.display = 'block';
     } else {
       messageElement.textContent = `Error: ${data.message}`;
     }
