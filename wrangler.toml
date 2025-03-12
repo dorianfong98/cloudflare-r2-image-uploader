@@ -1,10 +1,12 @@
 name = "dpp1"  # Name of the worker
+pages_build_output_dir = "./frontend" # Tell Pages where to look for static assets
+
 type = "javascript"  # Type is JavaScript since you're using index.js
 
 # Add the build section for your Worker
 [build]
   command = "npm install"  # Optional, for any dependencies you might have
-  pages_build_output_dir = "./frontend" # Tell Pages where to look for static assets
+  command = "npm run build"
   worker = "./backend/src/index.js"  # Path to your Worker file in the backend
 
 [env.production]
