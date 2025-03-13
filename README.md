@@ -5,7 +5,7 @@ A **serverless image upload platform** powered by **Cloudflare Workers** + **R2*
 ---
 
 ## 🚀 Live Demo
-
+- **Frontend (Choose File or Drag-and-drop)**: [https://cloudflare-r2-image-uploader.pages.dev/](https://cloudflare-r2-image-uploader.pages.dev/)
 - **API (Upload + Fetch images)**: [https://dpp1.burrito-bot.workers.dev](https://dpp1.burrito-bot.workers.dev)
 
 ---
